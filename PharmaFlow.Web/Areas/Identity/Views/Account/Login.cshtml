@@ -1,0 +1,32 @@
+﻿@model LoginModel
+ 
+<div class="row align-items-center h-100">
+    <form method="post" asp-action="Login" asp-controller="Account" asp-area="Identity" asp-anti-forgery="true" class="col-4 mx-auto">
+        <h2 class="text-center">Авторизація</h2>
+
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+
+        <div>
+
+            <div class="form-outline mb-4">
+                <input type="email" asp-for="Email" id="emil" class="form-control" placeholder="Електронна пошта" />
+                <span asp-validation-for="Email" class="field-validation-error text-danger"/>
+            </div>
+
+            <div class="form-outline mb-4">
+                <input asp-for="Password" id="password" class="form-control" placeholder="Пароль" />
+                <span asp-validation-for="Password" class="field-validation-error text-danger"/>
+            </div>
+
+            <div class="row">
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Увійти</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section  Scripts{
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+}

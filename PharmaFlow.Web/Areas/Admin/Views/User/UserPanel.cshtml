@@ -1,0 +1,97 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model List<UserViewModel>
+
+<div class="mb-4 row">
+    <div>
+        <a class="btn btn-primary" asp-area="Admin" asp-controller="User" asp-action="CreateUser">
+            <i class='bx bx-plus-circle icon'></i>
+            <span>Cтворити користувача</span>
+        </a>
+    </div>
+</div>
+
+@*<div class="card p-4 mb-4">
+    <table class="table table-hover mb-4">
+
+        <thead>
+
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr class="table-secondary">
+                    <th scope="row">@item.ID</th>
+                    <td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.Email</td>
+                    <td>@item.Role</td>
+                    <td>
+                        <div>
+                            <a class="text-decoration-none" asp-area="Admin" asp-controller="User" asp-action="GetDetailedUser" asp-route-email="@item.Email">Edit</a>
+                            <a class="text-decoration-none mx-3" asp-area="Admin" asp-controller="User" asp-action="RemoveUser" asp-route-id="@item.ID">Remove</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+</div>*@
+@foreach (var item in Model)
+{
+    <div class="card p-4 mb-4">
+        <div class="row">
+            <div class="col-md-2 row text-center align-self-center">
+                <i id="user-avatar" class='bx bx-user-circle'></i>
+            </div>
+
+            <div class="col-md-4">
+                <div>
+                    <span>ID: @item.ID</span>
+                </div>
+
+                <div>
+                    <span>Електронна пошта: @item.Email</span>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div>
+                    <span>Ім'я: @item.FirstName</span>
+                </div>
+                <div>
+                    <span>Прізвище: @item.LastName</span>
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <span>Роль: @item.Role </span>
+            </div>
+
+            <div class="col-md-3 row align-self-center text-center">
+                <div>
+                    <a class="btn btn-primary my-md-2" asp-area="Admin" asp-controller="User" asp-action="GetDetailedUser" asp-route-email="@item.Email">
+                        <i class='bx bx-edit icon'></i>
+                        <span>Редагувати</span>
+                    </a>
+
+                    <a class="btn btn-danger" asp-area="Admin" asp-controller="User" asp-action="RemoveUser" asp-route-id="@item.ID">
+                        <i class='bx bx-trash icon'></i>
+                        <span>Видалити</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
