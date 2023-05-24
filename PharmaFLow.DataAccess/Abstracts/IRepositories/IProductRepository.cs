@@ -1,15 +1,24 @@
-﻿using PharmaFLow.DataAccess.Persistences.Products;
+﻿using PharmaFlow.Infrastructure.Dtos.Requests;
 
 namespace PharmaFLow.DataAccess.Abstracts.IRepositories;
 
 public interface IProductRepository
 {
-    Task<ProductPersistence> GetProductByIDAsync(int ID);
-    Task<List<ProductPersistence>> GetProductsRangeAsync(int from, int to, string search);
-    Task<long> GetProductsCountAsync();
-    Task<int> AddProductAsync(ProductPersistence product);
-    Task UpdateProductAsync(ProductPersistence product);
-    Task RemoveProductAsync(int ID);
-    Task AddCharactericticAsync(ProductCharacteristicPersistence characteristic);
-    Task<List<ProductCharacteristicPersistence>> GetCharactericticsAsync(int productID);
+    Task<List<ProductDto>> GetProductListAsync();
+
+    Task<ProductDto> GetProductByIDAsync(Guid productID);
+
+    Task CreateProductAsync(CreateProductRequest product);
+
+    Task UpdateProductAsync(CreateProductRequest product);
+
+    Task RemoveProductByIDAsync(Guid productID);
+
+    Task<List<ProductTypeDto>> GetProductTypeListAsync();
+
+    Task CreateProductTypeAsync(string name);
+
+    Task<List<ProductManufacturerDto>> GetProductManufacturerListAsync();
+
+    Task CreateProductManufacturerAsync(string name);
 }

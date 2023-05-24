@@ -1,5 +1,5 @@
 ﻿using PharmaFlow.Web.Areas.Admin.ViewModels;
-using PharmaFLow.DataAccess.Persistences;
+using PharmaFLow.DataAccess.Persistences.Products;
 
 namespace PharmaFlow.Web.Extensions;
 
@@ -65,6 +65,15 @@ internal static class UserExtensions
             LastName = user.LastName,
             Email = user.Email,
             Role = user.Role.ToUserRoleViewModel(),
+        };
+    }
+
+    public static CreateProductCharacteristicRequest ToCreateProductCharacteristicRequest(this ProductCharacteristicViewModel characteristic)
+    {
+        return new()
+        {
+            Name = characteristic.Name,
+            Value = characteristic.Value,
         };
     }
 }

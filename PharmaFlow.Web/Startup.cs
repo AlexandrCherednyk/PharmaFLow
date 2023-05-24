@@ -29,8 +29,6 @@ public class Startup
         //DI.
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
-        services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
-        services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
         services.AddScoped<IReportRepository, ReportRepository>();
     }
 
@@ -41,6 +39,7 @@ public class Startup
             var context = serviceScope.ServiceProvider.GetRequiredService<PharmaFlowDbContext>();
             context.Database.Migrate();
             context.SeedUsers();
+            context.SeedProducts();
         }
 
         // Configure the HTTP request pipeline.

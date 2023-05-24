@@ -25,7 +25,7 @@ public class UserController : Controller
         }
         catch (Exception)
         {
-            return View("Index");
+            return View("~/Views/Error.cshtml");
         }
     }
 
@@ -46,7 +46,7 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> CreateUser()
+    public IActionResult CreateUser()
     {
         return View("AddUser");
     }

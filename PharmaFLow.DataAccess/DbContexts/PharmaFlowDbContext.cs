@@ -43,6 +43,15 @@ public class PharmaFlowDbContext : DbContext
         SaveChanges();
     }
 
+    public void SeedProducts()
+    {
+        if (Products.Any()) return;
+
+        IList<ProductPersistence> products = PharmaFlowDataSeeding.GetProducts();
+        Products.AddRange(products);
+        SaveChanges();
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder

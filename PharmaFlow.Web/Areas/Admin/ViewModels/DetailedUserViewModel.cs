@@ -13,7 +13,7 @@ public record DetailedUserViewModel
     public string LastName { get; set; } = null!;
 
     [Required(ErrorMessage = "Будь ласка, введіть електронну пошту.")]
-    [MaxLength(255, ErrorMessage = "електронна пошта має бути менше 255 символів.")]
+    [MaxLength(255, ErrorMessage = "Електронна пошта має бути менше 255 символів.")]
     [EmailAddress]
     public string Email { get; set; } = null!;
 

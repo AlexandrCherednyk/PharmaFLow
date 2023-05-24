@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model List<ProductViewModel>
+
+@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+{
+    <div class="mb-4 row">
+        <div>
+            <a class="btn btn-primary" asp-area="Pharmacist" asp-controller="Product" asp-action="GetProductCharacteristicPanel">
+                <i class='bx bx-plus-circle icon'></i>
+                <span>Додати характеристики</span>
+            </a>
+
+            <a class="btn btn-primary mx-3" asp-area="Pharmacist" asp-controller="Product" asp-action="CreateProductPanel">
+                <i class='bx bx-plus-circle icon'></i>
+                <span>Додати продукт</span>
+            </a>
+        </div>
+    </div>
+}
+
+@foreach (var item in Model)
+{
+    <div class="card p-4 mb-4">
+        <div class="row">
+            <div class="col-md-3 row text-center align-self-center img-wrapper">
+                <img src="@item.PathToFile" alt="Product img." />
+            </div>
+
+            <div class="col-md-2">
+                <div class ="row text-center align-self-center">
+                    <div>
+                        <span>Назва: @item.Name</span>
+                    </div>
+
+                    <div>
+                        <span>Тип: @item.Type.Name </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="row text-center align-self-center">
+                    <div>
+                        <span>Ціна: @item.Price₴</span>
+                    </div>
+
+                    <div>
+                        <span>Кількість: @item.Count</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5 row align-self-center text-center">
+                <div>
+                    <a class="btn btn-success my-md-2" asp-area="Pharmacist" asp-controller="Product" asp-action="BuyProduct" asp-route-id="@item.ID">
+                        <i class='bx bx-basket icon'></i>
+                        <span>Створити звіт</span>
+                    </a>
+
+                    <a class="btn btn-primary my-md-2" asp-area="Pharmacist" asp-controller="Product" asp-action="UpdateProductPanel" asp-route-id="@item.ID">
+                        <i class='bx bx-edit icon'></i>
+                        <span>Деталі</span>
+                    </a>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                    {
+                        <a class="btn btn-danger" asp-area="Pharmacist" asp-controller="Product" asp-action="RemoveProduct" asp-route-id="@item.ID">
+                            <i class='bx bx-trash icon'></i>
+                            <span>Видалити</span>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

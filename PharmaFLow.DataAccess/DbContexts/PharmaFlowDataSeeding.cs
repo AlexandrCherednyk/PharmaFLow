@@ -36,4 +36,93 @@ internal static class PharmaFlowDataSeeding
             },
         };
     }
+
+    public static IList<ProductPersistence> GetProducts()
+    {
+        return new List<ProductPersistence>
+        {
+            new ProductPersistence
+            {
+                Name = "Цитрамон",
+                Description = "Знеболюючий лікарський засіб призначають дорослим по 1 таблетці 2-3 рази на добу після прийому їжі.",
+                Price = 20,
+                Count = 450,
+                PathToFile = null,
+                Type = new ProductTypePersistence
+                {
+                    Name = "Ліки",
+                },
+                Manufacturer = new ProductManufacturerPersistence
+                {
+                    Name = "Україна",
+                },
+                Characteristics = new List<ProductCharacteristicPersistence>()
+                {
+                    new ProductCharacteristicPersistence()
+                    {
+                        Name = "Діючи речовини",
+                        Value = "парацетамол, кофеїн, ацетилсаліцилова кислота",
+                    },
+                    new ProductCharacteristicPersistence()
+                    {
+                        Name = "Форма випуску",
+                        Value = "таблетки",
+                    },
+                },
+            },
+            new ProductPersistence
+            {
+                Name = "Магне-В6",
+                Description = "Таблетки слід ковтати цілими, запиваючи 1 склянкою води.",
+                Price = 275,
+                Count = 200,
+                PathToFile = null,
+                Type = new ProductTypePersistence
+                {
+                    Name = "Вітаміни і мінерали",
+                },
+                Manufacturer = new ProductManufacturerPersistence
+                {
+                    Name = "Германія",
+                },
+                Characteristics = new List<ProductCharacteristicPersistence>()
+                {
+                    new ProductCharacteristicPersistence()
+                    {
+                        Name = "Діючи речовини",
+                        Value = "магній, піроксид",
+                    },
+                    new ProductCharacteristicPersistence()
+                    {
+                        Name = "Кількість в упаковці",
+                        Value = "60 шт.",
+                    },
+                },
+            },
+            new ProductPersistence
+            {
+                Name = "Риб'ячий жир",
+                Description = "Дорослим і дітям з 12 років по 1 капсулі на добу під час прийому їжі.",
+                Price = 55,
+                Count = 990,
+                PathToFile = null,
+                Type = new ProductTypePersistence
+                {
+                    Name = "Добавки",
+                },
+                Manufacturer = new ProductManufacturerPersistence
+                {
+                    Name = "Італія",
+                },
+                Characteristics = new List<ProductCharacteristicPersistence>()
+                {
+                    new ProductCharacteristicPersistence()
+                    {
+                        Name = "Кількість в упаковці",
+                        Value = "10 шт.",
+                    },
+                },
+            },
+        };
+    }
 }

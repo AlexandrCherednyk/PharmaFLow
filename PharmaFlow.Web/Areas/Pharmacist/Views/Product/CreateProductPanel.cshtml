@@ -1,0 +1,126 @@
+﻿@model CreateProductViewModel
+
+<div class="card p-4 mb-4">
+    <form method="post" asp-action="CreateProduct" asp-controller="Product" asp-area="Pharmacist" enctype="multipart/form-data" asp-anti-forgery="true">
+        <h2 class="text-center mb-4">Створити продукт</h2>
+
+        <div class="validation text-danger mx-2">
+            <p>@ViewBag.CreateProductErrorMessage</p>
+        </div>
+
+        <div class="col-12 mx-2 mt-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3 form-group row">
+                        <label for="formFile" class="col-md-4 form-label">Завантажте зображення:</label>
+                        <div class="col-md-8">
+                            <input class="form-control" asp-for="Image" name="Image" type="file" id="formFile">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-group row">
+                        <label class="col-md-4 col-form-label" for="Name">Назва:</label>
+                        <div class="col-md-8">
+                            <input type="text" asp-for="Name" id="firstName" class="form-control" />
+                            <span asp-validation-for="Name" class="field-validation-error text-danger" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-group row">
+                        <label class="col-md-4 col-form-label" for="Name">Опис:</label>
+                        <div class="col-md-8">
+                            <textarea class="form-control" asp-for="Description" rows="2" data-val="true" id="Description" maxlength="255" name="Description"></textarea>
+                            <span asp-validation-for="Description" class="field-validation-error text-danger" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3 form-group row">
+                        <label class="col-md-4 col-form-label" for="Name">Тип:</label>
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.TypeID, new SelectList(ViewBag.Types, "ID", "Name"), "Оберіть тип:", new { @class = "form-select"})
+                            <span asp-validation-for="TypeID" class="field-validation-error text-danger" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-group row">
+                        <label class="col-md-4 col-form-label" for="Name">Виробник:</label>
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.ManufacturerID, new SelectList(ViewBag.Manufacturers, "ID", "Name"), "Оберіть виробника:", new { @class = "form-select"})
+                            <span asp-validation-for="ManufacturerID" class="field-validation-error text-danger" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-group row">
+                        <label class="col-md-4 col-form-label" for="Name">Ціна:</label>
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="text" asp-for="Price" id="product-name" class="form-control" placeholder="0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div id="characteristics-block">
+
+                    <h2 class="text-center my-4">Додати характеристики</h2>
+
+                    <div class="book-item row mb-3">
+                        <div class="col-6">
+                            <input type="text" asp-for="Characteristics[0].Name" class="form-control" placeholder="Name" />
+                        </div>
+
+                        <div class="col-6">
+                            <input type="text" asp-for="Characteristics[0].Value" class="form-control" placeholder="Description" />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mb-4">
+                    <button type="button" class="addInput btn btn-primary btn-block rounded-pill">+</button>
+                    <button type="button" class="removeLink btn btn-primary btn-block rounded-pill mx-4">-</button>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block mb-4 mx-2">Створити</button>
+    </form>
+</div>
+
+@section  Scripts{
+    <script>
+        $(function () {
+            var i = 0;
+            $('.addInput').click(function (e) {
+                i++;
+
+                var htmlToAdd = "<div class='" + i + "-characteristics book-item row mb-3'>" +
+                    "<div class='col-6'>" +
+                    "<input type='text' name='Characteristics[" + i + "].Name' class='form-control' placeholder='Name'/>" +
+                    "</div>" +
+                    "<div class='col-6'>" +
+                    "<input type='text' name='Characteristics[" + i + "].Value' class='form-control' placeholder='Description'/>" +
+                    "</div>" +
+                    "</div>";
+
+                $('#characteristics-block').append(htmlToAdd);
+            })
+
+            $('.removeLink').click(function (e) {
+                if (i > 0) {
+                    $('.' + i + '-characteristics').remove();
+                    i--
+                }
+            })
+        })
+    </script>
+
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+}
