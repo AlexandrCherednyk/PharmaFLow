@@ -22,7 +22,7 @@ namespace PharmaFLow.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.Pharmacies.PharmacyMemberPersistence", b =>
+            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.Contacts.ContactPersistence", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -44,10 +44,6 @@ namespace PharmaFLow.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("last_name");
 
-                    b.Property<Guid>("PharmacyID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("pharmacy_id");
-
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -58,15 +54,50 @@ namespace PharmaFLow.DataAccess.Migrations
                         .HasColumnName("state");
 
                     b.HasKey("ID")
-                        .HasName("pk_pharmacy_members");
+                        .HasName("pk_contacts");
 
-                    b.HasIndex("PharmacyID")
-                        .HasDatabaseName("ix_pharmacy_members_pharmacy_id");
-
-                    b.ToTable("pharmacy_members", (string)null);
+                    b.ToTable("contacts", (string)null);
                 });
 
-            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.Pharmacies.PharmacyPersistence", b =>
+            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.MedicalFacilities.MedicalFacilityContactPersistence", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("ContactID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("contact_id");
+
+                    b.Property<Guid>("MedicalFacilityID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("medical_facility_id");
+
+                    b.Property<Guid>("PositionID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("position_id");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int")
+                        .HasColumnName("state");
+
+                    b.HasKey("ID")
+                        .HasName("pk_medical_facility_contacts");
+
+                    b.HasIndex("ContactID")
+                        .HasDatabaseName("ix_medical_facility_contacts_contact_id");
+
+                    b.HasIndex("MedicalFacilityID")
+                        .HasDatabaseName("ix_medical_facility_contacts_medical_facility_id");
+
+                    b.HasIndex("PositionID")
+                        .HasDatabaseName("ix_medical_facility_contacts_position_id");
+
+                    b.ToTable("medical_facility_contacts", (string)null);
+                });
+
+            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.MedicalFacilities.MedicalFacilityContactPositionPersistence", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -83,9 +114,65 @@ namespace PharmaFLow.DataAccess.Migrations
                         .HasColumnName("state");
 
                     b.HasKey("ID")
-                        .HasName("pk_pharmacies");
+                        .HasName("pk_medical_facility_contact_positions");
 
-                    b.ToTable("pharmacies", (string)null);
+                    b.ToTable("medical_facility_contact_positions", (string)null);
+                });
+
+            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.MedicalFacilities.MedicalFacilityPersistence", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("address");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("name");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int")
+                        .HasColumnName("state");
+
+                    b.Property<Guid>("TypeID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("type_id");
+
+                    b.HasKey("ID")
+                        .HasName("pk_medical_facilities");
+
+                    b.HasIndex("TypeID")
+                        .HasDatabaseName("ix_medical_facilities_type_id");
+
+                    b.ToTable("medical_facilities", (string)null);
+                });
+
+            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.MedicalFacilities.MedicalFacilityTypePersistence", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("name");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int")
+                        .HasColumnName("state");
+
+                    b.HasKey("ID")
+                        .HasName("pk_medical_facility_types");
+
+                    b.ToTable("medical_facility_types", (string)null);
                 });
 
             modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.Products.ProductCharacteristicPersistence", b =>
@@ -260,6 +347,10 @@ namespace PharmaFLow.DataAccess.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
+                    b.Property<DateTime?>("ConfirmedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("confirmed_on");
+
                     b.Property<int>("Count")
                         .HasColumnType("int")
                         .HasColumnName("count");
@@ -272,13 +363,25 @@ namespace PharmaFLow.DataAccess.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("product_id");
 
+                    b.Property<Guid>("StaffTargetID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("staff_target_id");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int")
+                        .HasColumnName("state");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("total_price");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid?>("UserConfirmatorID")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("user_id");
+                        .HasColumnName("user_confirmator_id");
+
+                    b.Property<Guid>("UserCreatorID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("user_creator_id");
 
                     b.HasKey("ID")
                         .HasName("pk_output_reports");
@@ -286,8 +389,14 @@ namespace PharmaFLow.DataAccess.Migrations
                     b.HasIndex("ProductID")
                         .HasDatabaseName("ix_output_reports_product_id");
 
-                    b.HasIndex("UserID")
-                        .HasDatabaseName("ix_output_reports_user_id");
+                    b.HasIndex("StaffTargetID")
+                        .HasDatabaseName("ix_output_reports_staff_target_id");
+
+                    b.HasIndex("UserConfirmatorID")
+                        .HasDatabaseName("ix_output_reports_user_confirmator_id");
+
+                    b.HasIndex("UserCreatorID")
+                        .HasDatabaseName("ix_output_reports_user_creator_id");
 
                     b.ToTable("output_reports", (string)null);
                 });
@@ -352,16 +461,46 @@ namespace PharmaFLow.DataAccess.Migrations
                     b.ToTable("product_characteristic_persistence_product_persistence", (string)null);
                 });
 
-            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.Pharmacies.PharmacyMemberPersistence", b =>
+            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.MedicalFacilities.MedicalFacilityContactPersistence", b =>
                 {
-                    b.HasOne("PharmaFLow.DataAccess.Persistences.Pharmacies.PharmacyPersistence", "Pharmacy")
-                        .WithMany("Members")
-                        .HasForeignKey("PharmacyID")
+                    b.HasOne("PharmaFLow.DataAccess.Persistences.Contacts.ContactPersistence", "Contact")
+                        .WithMany("MedicalFacilityContacts")
+                        .HasForeignKey("ContactID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_pharmacy_members_pharmacies_pharmacy_id");
+                        .HasConstraintName("fk_medical_facility_contacts_contacts_contact_id");
 
-                    b.Navigation("Pharmacy");
+                    b.HasOne("PharmaFLow.DataAccess.Persistences.MedicalFacilities.MedicalFacilityPersistence", "MedicalFacility")
+                        .WithMany("Staff")
+                        .HasForeignKey("MedicalFacilityID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_medical_facility_contacts_medical_facilities_medical_facility_id");
+
+                    b.HasOne("PharmaFLow.DataAccess.Persistences.MedicalFacilities.MedicalFacilityContactPositionPersistence", "Position")
+                        .WithMany("Staff")
+                        .HasForeignKey("PositionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_medical_facility_contacts_medical_facility_contact_positions_position_id");
+
+                    b.Navigation("Contact");
+
+                    b.Navigation("MedicalFacility");
+
+                    b.Navigation("Position");
+                });
+
+            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.MedicalFacilities.MedicalFacilityPersistence", b =>
+                {
+                    b.HasOne("PharmaFLow.DataAccess.Persistences.MedicalFacilities.MedicalFacilityTypePersistence", "Type")
+                        .WithMany("MedicalFacilities")
+                        .HasForeignKey("TypeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_medical_facilities_medical_facility_types_type_id");
+
+                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.Products.ProductPersistence", b =>
@@ -415,16 +554,32 @@ namespace PharmaFLow.DataAccess.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_output_reports_products_product_id");
 
-                    b.HasOne("PharmaFLow.DataAccess.Persistences.UserPersistence", "User")
-                        .WithMany("OutputReports")
-                        .HasForeignKey("UserID")
+                    b.HasOne("PharmaFLow.DataAccess.Persistences.MedicalFacilities.MedicalFacilityContactPersistence", "StaffTarget")
+                        .WithMany()
+                        .HasForeignKey("StaffTargetID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_output_reports_users_user_id");
+                        .HasConstraintName("fk_output_reports_medical_facility_contacts_staff_target_id");
+
+                    b.HasOne("PharmaFLow.DataAccess.Persistences.UserPersistence", "UserConfirmator")
+                        .WithMany()
+                        .HasForeignKey("UserConfirmatorID")
+                        .HasConstraintName("fk_output_reports_users_user_confirmator_id");
+
+                    b.HasOne("PharmaFLow.DataAccess.Persistences.UserPersistence", "UserCreator")
+                        .WithMany()
+                        .HasForeignKey("UserCreatorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_output_reports_users_user_creator_id");
 
                     b.Navigation("Product");
 
-                    b.Navigation("User");
+                    b.Navigation("StaffTarget");
+
+                    b.Navigation("UserConfirmator");
+
+                    b.Navigation("UserCreator");
                 });
 
             modelBuilder.Entity("ProductCharacteristicPersistenceProductPersistence", b =>
@@ -444,9 +599,24 @@ namespace PharmaFLow.DataAccess.Migrations
                         .HasConstraintName("fk_product_characteristic_persistence_product_persistence_products_products_id");
                 });
 
-            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.Pharmacies.PharmacyPersistence", b =>
+            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.Contacts.ContactPersistence", b =>
                 {
-                    b.Navigation("Members");
+                    b.Navigation("MedicalFacilityContacts");
+                });
+
+            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.MedicalFacilities.MedicalFacilityContactPositionPersistence", b =>
+                {
+                    b.Navigation("Staff");
+                });
+
+            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.MedicalFacilities.MedicalFacilityPersistence", b =>
+                {
+                    b.Navigation("Staff");
+                });
+
+            modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.MedicalFacilities.MedicalFacilityTypePersistence", b =>
+                {
+                    b.Navigation("MedicalFacilities");
                 });
 
             modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.Products.ProductManufacturerPersistence", b =>
@@ -462,8 +632,6 @@ namespace PharmaFLow.DataAccess.Migrations
             modelBuilder.Entity("PharmaFLow.DataAccess.Persistences.UserPersistence", b =>
                 {
                     b.Navigation("InputReports");
-
-                    b.Navigation("OutputReports");
                 });
 #pragma warning restore 612, 618
         }

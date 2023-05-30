@@ -1,0 +1,51 @@
+﻿@model CreateMedicalFacilityTypeTypeOrContactPositionViewModel
+
+<div class="card p-4 mb-4">
+    <form method="post" asp-action="AddMedicalFacilityType" asp-controller="MedicalFacility" asp-area="Pharmacist" asp-anti-forgery="true">
+        <h2 class="text-center mb-4">Додати тип закладу</h2>
+
+        <div class="validation text-danger mx-2">
+            <p>@ViewBag.AddTypeErrorMessage</p>
+        </div>
+
+        <div class="col-4 mx-2">
+            <div>
+                <div class="mb-3 form-group row">
+                    <label class="col-md-4 col-form-label" for="Name">Назва:</label>
+                    <div class="col-md-8">
+                        <input type="text" asp-for="Type!.Name" id="name" class="form-control" />
+                        <span asp-validation-for="Type!.Name" class="field-validation-error text-danger" />
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block mb-4">Додати</button>
+        </div>
+    </form>
+</div>
+
+<div class="card p-4 mb-4">
+    <form method="post" asp-action="AddMedicalFacilityContactPosition" asp-controller="MedicalFacility" asp-area="Pharmacist" asp-anti-forgery="true">
+        <h2 class="text-center mb-4">Додати посаду кієнта</h2>
+
+        <div class="validation text-danger mx-2">
+            <p>@ViewBag.AddPositionErrorMessage</p>
+        </div>
+
+        <div class="col-4 mx-2">
+            <div class="mb-3 form-group row">
+                <label class="col-md-4 col-form-label" for="Email">Назва:</label>
+                <div class="col-md-8">
+                    <input type="text" asp-for="Position!.Name" id="name" class="form-control" />
+                    <span asp-validation-for="Position!.Name" class="field-validation-error text-danger" />
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block mb-4">Додати</button>
+        </div>
+    </form>
+</div>
+
+@section  Scripts{
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+}

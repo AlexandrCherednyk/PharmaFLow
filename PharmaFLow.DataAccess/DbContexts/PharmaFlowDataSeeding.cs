@@ -1,4 +1,5 @@
 ﻿using PharmaFlow.Utils;
+using System.Collections.Generic;
 
 namespace PharmaFLow.DataAccess.DbContexts;
 
@@ -123,6 +124,93 @@ internal static class PharmaFlowDataSeeding
                     },
                 },
             },
+        };
+    }
+
+    public static IList<MedicalFacilityPersistence> GetMedicalFacilities()
+    {
+        List<ContactPersistence> contacts = new List<ContactPersistence>
+        {
+            new ContactPersistence
+            {
+                FirstName = "matt",
+                LastName = "Phin",
+                Email = "test@mail.com",
+                Phone = "380976022331",
+            },
+            new ContactPersistence
+            {
+                FirstName = "Ryan",
+                LastName = "Gosling",
+                Email = "test@mail.com",
+                Phone = "380976022331",
+            },
+            new ContactPersistence
+            {
+                FirstName = "matt",
+                LastName = "Johnson",
+                Email = "test@mail.com",
+                Phone = "380976022331",
+            },
+        };
+
+        MedicalFacilityTypePersistence type = new()
+        {
+            Name = "Аптека",
+        };
+
+        return new List<MedicalFacilityPersistence>
+        {
+            new MedicalFacilityPersistence
+            {
+                Name = "Аптека низьких цін",
+                Type = type,
+                Address = "вулиця Бульварно-Кудрявська, 7, Київ, 04053",
+                Staff = new List<MedicalFacilityContactPersistence>
+                {
+                    new MedicalFacilityContactPersistence
+                    {
+                        Contact = contacts[0],
+                        Position = new MedicalFacilityContactPositionPersistence
+                        {
+                            Name = "Менеджер",
+                        },
+                    },
+                    new MedicalFacilityContactPersistence
+                    {
+                        Contact = contacts[1],
+                        Position = new MedicalFacilityContactPositionPersistence
+                        {
+                            Name = "Фармацевт",
+                        },
+                    },
+                },
+            },
+            new MedicalFacilityPersistence
+            {
+                Name = "Аптека Доброго Дня",
+                Type = type,
+                Address = "вулиця Богдана Хмельницького, 37, Київ, 02000",
+                Staff = new List<MedicalFacilityContactPersistence>
+                {
+                    new MedicalFacilityContactPersistence
+                    {
+                        Contact = contacts[1],
+                        Position = new MedicalFacilityContactPositionPersistence
+                        {
+                            Name = "Старший-фармацевт",
+                        },
+                    },
+                    new MedicalFacilityContactPersistence
+                    {
+                        Contact = contacts[2],
+                        Position = new MedicalFacilityContactPositionPersistence
+                        {
+                            Name = "Адміністратор",
+                        },
+                    },
+                },
+            }
         };
     }
 }

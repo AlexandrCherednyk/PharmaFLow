@@ -18,7 +18,4 @@ public record UserPersistence
 
     // Sales reports.
     public List<InputReportPersistence> InputReports { get; set; } = new();
-
-    // Purchasing reports.
-    public List<OutputReportPersistence> OutputReports { get; set; } = new();
 }

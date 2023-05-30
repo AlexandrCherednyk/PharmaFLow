@@ -23,24 +23,34 @@ internal class OutputReportPersistenceMap : IEntityTypeConfiguration<OutputRepor
         builder.Property(or => or.CreatedOn)
             .IsRequired();
 
+        builder.Property(or => or.ConfirmedOn)
+            .IsRequired(false);
+
+        builder.Property(c => c.State)
+            .HasConversion<int>();
+
         builder.HasOne(or => or.Product)
             .WithMany()
             .HasForeignKey(or => or.ProductID)
             .IsRequired()
             .HasConstraintName("fk_output_report_product");
 
-        builder.HasOne(or => or.User)
-            .WithMany(u => u.OutputReports)
-            .HasForeignKey(or => or.UserID)
+        builder.HasOne(or => or.UserCreator)
+            .WithMany()
+            .HasForeignKey(or => or.UserCreatorID)
             .IsRequired()
-            .HasConstraintName("fk_output_report_user");
+            .HasConstraintName("fk_output_report_user_creator");
 
-        builder.ToTable(p =>
-            p.HasCheckConstraint("count", "count > 0")
-            .HasName("ck_output_report_count"));
+        builder.HasOne(or => or.StaffTarget)
+            .WithMany()
+            .HasForeignKey(or => or.StaffTargetID)
+            .IsRequired()
+            .HasConstraintName("fk_output_report_staff_target");
 
-        builder.ToTable(p =>
-            p.HasCheckConstraint("total_price", "total_price > 0")
-            .HasName("ck_output_report_total_price"));
+        builder.HasOne(or => or.UserConfirmator)
+            .WithMany()
+            .HasForeignKey(or => or.UserConfirmatorID)
+            .IsRequired(false)
+            .HasConstraintName("fk_output_report_user_confirmator");
     }
 }

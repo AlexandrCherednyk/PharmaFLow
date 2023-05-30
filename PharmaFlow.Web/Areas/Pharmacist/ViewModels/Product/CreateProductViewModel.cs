@@ -6,7 +6,7 @@ public record CreateProductViewModel
 
     public int Count { get; init; }
 
-    public string PathToFile { get; set; }
+    public string? PathToFile { get; set; }
 
     [Required(ErrorMessage = "Будь ласка, введіть назву.")]
     public string Name { get; init; } = null!;

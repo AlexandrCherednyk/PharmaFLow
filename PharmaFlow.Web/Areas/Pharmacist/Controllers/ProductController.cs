@@ -52,8 +52,14 @@ public class ProductController : Controller
     {
         if (!ModelState.IsValid)
         {
+            List<ProductTypeViewModel> types = (await _productRepository.GetProductTypeListAsync()).ToProductrTypeViewModelList();
+            List<ProductManufacturerViewModel> manufacturers = (await _productRepository.GetProductManufacturerListAsync()).ToProductManufacturerViewModelList();
+
+            ViewBag.Types = types;
+            ViewBag.Manufacturers = manufacturers;
+
             ViewBag.CreateProductErrorMessage = "Невірні дані.";
-            return RedirectToAction("CreateProductPanel", "Product", new { area = "Pharmacist" });
+            return View("CreateProductPanel", product);
         }
 
         try

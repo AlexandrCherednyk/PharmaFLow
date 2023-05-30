@@ -1,6 +1,4 @@
-﻿using PharmaFlow.Web.Areas.Admin.ViewModels;
-using PharmaFlow.Web.Areas.Pharmacist.ViewModels.Product;
-using PharmaFLow.DataAccess.Persistences.Products;
+﻿using PharmaFlow.Web.Areas.Pharmacist.ViewModels.Product;
 
 namespace PharmaFlow.Web.Extensions;
 
@@ -36,7 +34,7 @@ public static class ProductExtension
             Description = prduct.Description,
             Price = prduct.Price,
             Count = prduct.Count,
-            PathToFile = prduct.PathToFile!,
+            PathToFile = prduct.PathToFile,
             TypeID = prduct.Type.ID,
             ManufacturerID = prduct.Manufacturer.ID,
             Characteristics = prduct.Characteristics.ConvertAll(c => c.ToProductrCharacteristicViewModel()),

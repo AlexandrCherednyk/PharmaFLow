@@ -29,9 +29,15 @@ public class PharmaFlowDbContext : DbContext
 
     public DbSet<OutputReportPersistence> OutputReports { get; set; }
 
-    public DbSet<PharmacyPersistence> Pharmacies { get; set; }
+    public DbSet<MedicalFacilityPersistence> MedicalFacilities { get; set; }
 
-    public DbSet<PharmacyMemberPersistence> PharmacyMembers { get; set; }
+    public DbSet<MedicalFacilityTypePersistence> MedicalFacilityTypes { get; set; }
+
+    public DbSet<MedicalFacilityContactPersistence> MedicalFacilityContacts { get; set; }
+
+    public DbSet<MedicalFacilityContactPositionPersistence> MedicalFacilityContactPositions { get; set; }
+
+    public DbSet<ContactPersistence> Contacts { get; set; }
 
     public void SeedUsers()
     {
@@ -49,6 +55,15 @@ public class PharmaFlowDbContext : DbContext
 
         IList<ProductPersistence> products = PharmaFlowDataSeeding.GetProducts();
         Products.AddRange(products);
+        SaveChanges();
+    }
+
+    public void SeedMedicalFacilities()
+    {
+        if (MedicalFacilities.Any()) return;
+
+        IList<MedicalFacilityPersistence> medicalFacilities = PharmaFlowDataSeeding.GetMedicalFacilities();
+        MedicalFacilities.AddRange(medicalFacilities);
         SaveChanges();
     }
 

@@ -1,6 +1,4 @@
-﻿using PharmaFlow.Infrastructure.Dtos.Requests;
-
-namespace PharmaFLow.DataAccess.Abstracts.IRepositories;
+﻿namespace PharmaFLow.DataAccess.Abstracts.IRepositories;
 
 public interface IProductRepository
 {

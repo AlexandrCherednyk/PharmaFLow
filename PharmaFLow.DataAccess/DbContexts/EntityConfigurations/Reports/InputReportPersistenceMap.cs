@@ -37,13 +37,5 @@ internal class InputReportPersistenceMap : IEntityTypeConfiguration<InputReportP
             .HasForeignKey(ir => ir.UserID)
             .IsRequired()
             .HasConstraintName("fk_input_report_user");
-
-        builder.ToTable(p =>
-            p.HasCheckConstraint("count", "count > 0")
-            .HasName("ck_input_report_count"));
-
-        builder.ToTable(p =>
-            p.HasCheckConstraint("total_price", "total_price > 0")
-            .HasName("ck_input_report_total_price"));
     }
 }

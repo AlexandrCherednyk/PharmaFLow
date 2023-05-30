@@ -1,4 +1,6 @@
 ﻿using PharmaFLow.DataAccess.DbContexts;
+using PharmaFLow.DataAccess.Persistences.Contacts;
+using PharmaFLow.DataAccess.Repositories;
 
 namespace PharmaFlow.Web;
 
@@ -30,6 +32,8 @@ public class Startup
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IReportRepository, ReportRepository>();
+        services.AddScoped<IMedicalFacilityRepository, MedicalFacilityRepository>();
+        services.AddScoped<IContactRepository, ContactRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -40,6 +44,7 @@ public class Startup
             context.Database.Migrate();
             context.SeedUsers();
             context.SeedProducts();
+            context.SeedMedicalFacilities();
         }
 
         // Configure the HTTP request pipeline.

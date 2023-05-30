@@ -49,13 +49,5 @@ internal class ProductPersistenceMap : IEntityTypeConfiguration<ProductPersisten
         builder
             .HasMany(p => p.Characteristics)
             .WithMany(c => c.Products);
-
-        builder.ToTable(p =>
-            p.HasCheckConstraint("price", "price > 0")
-            .HasName("ck_product_price"));
-
-        builder.ToTable(p =>
-            p.HasCheckConstraint("count", "count > 0")
-            .HasName("ck_product_count"));
     }
 }

@@ -12,7 +12,23 @@ namespace PharmaFLow.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "pharmacies",
+                name: "contacts",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    first_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    last_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    state = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_contacts", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "medical_facility_contact_positions",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -21,7 +37,20 @@ namespace PharmaFLow.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_pharmacies", x => x.id);
+                    table.PrimaryKey("pk_medical_facility_contact_positions", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "medical_facility_types",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    state = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_medical_facility_types", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,24 +111,22 @@ namespace PharmaFLow.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "pharmacy_members",
+                name: "medical_facilities",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    first_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    last_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    state = table.Column<int>(type: "int", nullable: false),
-                    pharmacy_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    type_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    state = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_pharmacy_members", x => x.id);
+                    table.PrimaryKey("pk_medical_facilities", x => x.id);
                     table.ForeignKey(
-                        name: "fk_pharmacy_members_pharmacies_pharmacy_id",
-                        column: x => x.pharmacy_id,
-                        principalTable: "pharmacies",
+                        name: "fk_medical_facilities_medical_facility_types_type_id",
+                        column: x => x.type_id,
+                        principalTable: "medical_facility_types",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -136,6 +163,39 @@ namespace PharmaFLow.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "medical_facility_contacts",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    medical_facility_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    contact_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    position_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    state = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_medical_facility_contacts", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_medical_facility_contacts_contacts_contact_id",
+                        column: x => x.contact_id,
+                        principalTable: "contacts",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_medical_facility_contacts_medical_facilities_medical_facility_id",
+                        column: x => x.medical_facility_id,
+                        principalTable: "medical_facilities",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_medical_facility_contacts_medical_facility_contact_positions_position_id",
+                        column: x => x.position_id,
+                        principalTable: "medical_facility_contact_positions",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "input_reports",
                 columns: table => new
                 {
@@ -157,34 +217,6 @@ namespace PharmaFLow.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_input_reports_users_user_id",
-                        column: x => x.user_id,
-                        principalTable: "users",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "output_reports",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    count = table.Column<int>(type: "int", nullable: false),
-                    total_price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    created_on = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_output_reports", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_output_reports_products_product_id",
-                        column: x => x.product_id,
-                        principalTable: "products",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_output_reports_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -215,6 +247,49 @@ namespace PharmaFLow.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "output_reports",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    count = table.Column<int>(type: "int", nullable: false),
+                    total_price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    created_on = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    confirmed_on = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    state = table.Column<int>(type: "int", nullable: false),
+                    user_creator_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    staff_target_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    user_confirmator_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_output_reports", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_output_reports_medical_facility_contacts_staff_target_id",
+                        column: x => x.staff_target_id,
+                        principalTable: "medical_facility_contacts",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_output_reports_products_product_id",
+                        column: x => x.product_id,
+                        principalTable: "products",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_output_reports_users_user_confirmator_id",
+                        column: x => x.user_confirmator_id,
+                        principalTable: "users",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "fk_output_reports_users_user_creator_id",
+                        column: x => x.user_creator_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "ix_input_reports_product_id",
                 table: "input_reports",
@@ -226,19 +301,44 @@ namespace PharmaFLow.DataAccess.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_medical_facilities_type_id",
+                table: "medical_facilities",
+                column: "type_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_medical_facility_contacts_contact_id",
+                table: "medical_facility_contacts",
+                column: "contact_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_medical_facility_contacts_medical_facility_id",
+                table: "medical_facility_contacts",
+                column: "medical_facility_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_medical_facility_contacts_position_id",
+                table: "medical_facility_contacts",
+                column: "position_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_output_reports_product_id",
                 table: "output_reports",
                 column: "product_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_output_reports_user_id",
+                name: "ix_output_reports_staff_target_id",
                 table: "output_reports",
-                column: "user_id");
+                column: "staff_target_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_pharmacy_members_pharmacy_id",
-                table: "pharmacy_members",
-                column: "pharmacy_id");
+                name: "ix_output_reports_user_confirmator_id",
+                table: "output_reports",
+                column: "user_confirmator_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_output_reports_user_creator_id",
+                table: "output_reports",
+                column: "user_creator_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_product_characteristic_persistence_product_persistence_products_id",
@@ -266,16 +366,13 @@ namespace PharmaFLow.DataAccess.Migrations
                 name: "output_reports");
 
             migrationBuilder.DropTable(
-                name: "pharmacy_members");
-
-            migrationBuilder.DropTable(
                 name: "product_characteristic_persistence_product_persistence");
 
             migrationBuilder.DropTable(
-                name: "users");
+                name: "medical_facility_contacts");
 
             migrationBuilder.DropTable(
-                name: "pharmacies");
+                name: "users");
 
             migrationBuilder.DropTable(
                 name: "product_characteristics");
@@ -284,10 +381,22 @@ namespace PharmaFLow.DataAccess.Migrations
                 name: "products");
 
             migrationBuilder.DropTable(
+                name: "contacts");
+
+            migrationBuilder.DropTable(
+                name: "medical_facilities");
+
+            migrationBuilder.DropTable(
+                name: "medical_facility_contact_positions");
+
+            migrationBuilder.DropTable(
                 name: "product_manufacturers");
 
             migrationBuilder.DropTable(
                 name: "product_types");
+
+            migrationBuilder.DropTable(
+                name: "medical_facility_types");
         }
     }
 }

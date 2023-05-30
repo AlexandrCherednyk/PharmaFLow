@@ -26,4 +26,8 @@
     <ProjectReference Include="..\PharmaFlow.Utils\PharmaFlow.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DbContexts\EntityConfigurations\Tenants\" />
+  </ItemGroup>
+
 </Project>

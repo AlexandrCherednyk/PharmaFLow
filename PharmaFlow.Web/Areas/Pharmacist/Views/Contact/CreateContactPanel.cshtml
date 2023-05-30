@@ -1,0 +1,53 @@
+﻿@model ContactViewModel
+
+<div class="card p-4 mb-4">
+    <form method="post" asp-action="CreateContact" asp-controller="Contact" asp-area="Pharmacist" enctype="multipart/form-data" asp-anti-forgery="true">
+        <h2 class="text-center mb-4">Створити контакт</h2>
+
+        <div class="validation text-danger mx-2">
+            <p>@ViewBag.CreateContactErrorMessage</p>
+        </div>
+
+        <div class="col-4 mx-2">
+            <div>
+                <div class="mb-3 form-group row">
+                    <label class="col-md-4 col-form-label" for="FirstName">Ім'я:</label>
+                    <div class="col-md-8">
+                        <input type="text" asp-for="FirstName" id="firstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="field-validation-error text-danger" />
+                    </div>
+                </div>
+
+                <div class="mb-3 form-group row">
+                    <label class="col-md-4 col-form-label" for="LastName">Прізвище:</label>
+                    <div class="col-md-8">
+                        <input type="text" asp-for="LastName" id="lastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="field-validation-error text-danger" />
+                    </div>
+                </div>
+
+                <div class="mb-3 form-group row">
+                    <label class="col-md-4 col-form-label" for="Email">Електронна пошта:</label>
+                    <div class="col-md-8">
+                        <input type="text" asp-for="Email" id="email" class="form-control" />
+                        <span asp-validation-for="Email" class="field-validation-error text-danger" />
+                    </div>
+                </div>
+
+                <div class="mb-3 form-group row">
+                    <label class="col-md-4 col-form-label" for="Phone">Контактний номер:</label>
+                    <div class="col-md-8">
+                        <input type="text" asp-for="Phone" id="Phone" class="form-control" />
+                        <span asp-validation-for="Phone" class="field-validation-error text-danger" />
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block mb-4">Створити</button>
+        </div>
+    </form>
+</div>
+
+@section  Scripts{
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+}
