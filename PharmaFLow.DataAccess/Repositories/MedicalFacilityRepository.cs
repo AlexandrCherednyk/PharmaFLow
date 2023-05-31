@@ -146,6 +146,7 @@ public class MedicalFacilityRepository : IMedicalFacilityRepository
         try
         {
             List<MedicalFacilityContactPersistence> medicalFacilityContacts = await _db.MedicalFacilityContacts
+                .Include(mc => mc.MedicalFacility)
                 .Include(mc => mc.Contact)
                 .Include(mc => mc.Position)
                 .Where(m => m.State == MedicalFacilityContactStatePersistence.Active)

@@ -39,6 +39,8 @@ public class PharmaFlowDbContext : DbContext
 
     public DbSet<ContactPersistence> Contacts { get; set; }
 
+    public DbSet<MeetPersistence> Meetings { get; set; }
+
     public void SeedUsers()
     {
         if (Users.Any()) return;

@@ -1,0 +1,51 @@
+﻿@model CreateMeetViewModel
+
+<div class="card p-4 mb-4">
+    <form method="post" asp-action="CreateMeet" asp-controller="Calendar" asp-area="Pharmacist" enctype="multipart/form-data" asp-anti-forgery="true">
+        <h2 class="text-center mb-4">Створити Зустріч</h2>
+
+        <div class="validation text-danger mx-2">
+            <p>@ViewBag.CreateMeetErrorMessage</p>
+        </div>
+
+        <div class="col-12 mx-2 mt-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3 form-group row">
+                        <label class="col-md-2 col-form-label" for="start">Початок:</label>
+                        <div class="col-md-6">
+                            <input type="time" asp-for="Start" id="start" class="form-control" />
+                            <span asp-validation-for="Start" class="field-validation-error text-danger" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="mb-3 form-group row">
+                        <label class="col-md-2 col-form-label" for="end">Кінець:</label>
+                        <div class="col-md-6">
+                            <input type="time" asp-for="End" id="end" class="form-control" />
+                            <span asp-validation-for="End" class="field-validation-error text-danger" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 form-group row">
+                    <label class="col-md-2 col-form-label" for="StaffTargetID">Працівник:</label>
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.StaffTargetID, new SelectList(ViewBag.Staff, "ID", "DropDownText"), "Оберіть працівника:", new { @class = "form-select"})
+                        <span asp-validation-for="StaffTargetID" class="field-validation-error text-danger" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block mb-4 mx-2">Створити</button>
+    </form>
+</div>
+
+@section  Scripts{
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+}

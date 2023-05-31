@@ -38,6 +38,7 @@ public static class MedicalFacilityExtension
         return new()
         {
             ID = medicalFacilityContact.ID,
+            Address = medicalFacilityContact.MedicalFacility!.Address,
             Cotnact = medicalFacilityContact.Contact!.ToContactDto(),
             Position = medicalFacilityContact.Position!.ToMedicalFacilityContactPositionDto(),
         };

@@ -39,6 +39,7 @@ public static class MedicalFacilityExtension
             Phone = medicalFacilityContact.Cotnact!.Phone,
             PositionID = medicalFacilityContact.Position!.ID,
             PositionName = medicalFacilityContact.Position!.Name,
+            Address = medicalFacilityContact.Address,
         };
     }
 }

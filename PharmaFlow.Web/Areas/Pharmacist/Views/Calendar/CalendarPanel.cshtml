@@ -1,0 +1,82 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model List<MeetViewModel>
+
+<div class="mb-4 row">
+    <div>
+        <a class="btn btn-primary" asp-area="Pharmacist" asp-controller="Calendar" asp-action="CreateMeetPanel">
+            <i class='bx bx-plus-circle icon'></i>
+            <span>Створити зустріч</span>
+        </a>
+    </div>
+</div>
+
+<div class="card p-4">
+    <div id="map-container-google-1" class="z-depth-1-half map-container mb-4" style="height: 500px">
+        <iframe src="https://maps.google.com/maps?q=kyiv&hl=uk&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0"
+                style="border:0" allowfullscreen></iframe>
+    </div>
+
+    @foreach (var item in Model)
+    {
+        <div class="mb-1 p-4 bg-light">
+            <div class="row">
+                <div class="col-md-3">
+                    <div>
+                        <span>Початок: @item.Start</span>
+                    </div>
+
+                    <div>
+                        <span>Кінець: @item.End</span>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div>
+                        <span>Ім'я: @item.StaffTargetLastName</span>
+                    </div>
+
+                    <div>
+                        <span>Прізвище: @item.StaffTargetFirstName</span>
+                    </div>
+
+                    <div>
+                        <span>Посада: @item.StaffTargetPositionName</span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div>
+                        <span>Адреса: @item.StaffTargetAddress</span>
+                    </div>
+
+                    <div>
+                        <span>Імейл фарм-представника: @item.UserEmail</span>
+                    </div>
+                </div>
+
+                <div class="col-md-3 row align-self-center text-center">
+                    <div>
+                        @if(item.State == ViewModels.Enumerations.Meetings.MeetStateViewModel.Active)
+                        {
+                            <a class="btn btn-primary" asp-area="Pharmacist" asp-controller="Calendar" asp-action="CompleteMeet" asp-route-id="@item.ID">
+                                <i class='bx bx-check icon'></i>
+                                <span>Завершити</span>
+                            </a>
+                        }
+                        else if (item.State == ViewModels.Enumerations.Meetings.MeetStateViewModel.Completed)
+                        {
+                            <div>
+                                <span>Стан: завершена зустріч</span>
+                            </div>
+                        }
+
+                        <a class="btn btn-danger my-md-2" asp-area="Pharmacist" asp-controller="Calendar" asp-action="RemoveMeet" asp-route-id="@item.ID">
+                            <i class='bx bx-trash icon'></i>
+                            <span>Видалити</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
