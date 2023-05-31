@@ -48,7 +48,7 @@ internal static class PharmaFlowDataSeeding
                 Description = "Знеболюючий лікарський засіб призначають дорослим по 1 таблетці 2-3 рази на добу після прийому їжі.",
                 Price = 20,
                 Count = 450,
-                PathToFile = null,
+                PathToFile = "\\images\\89a571a1-8224-41b0-a955-536eae5ad527.webp",
                 Type = new ProductTypePersistence
                 {
                     Name = "Ліки",
@@ -77,7 +77,7 @@ internal static class PharmaFlowDataSeeding
                 Description = "Таблетки слід ковтати цілими, запиваючи 1 склянкою води.",
                 Price = 275,
                 Count = 200,
-                PathToFile = null,
+                PathToFile = "\\images\\47f3496a-3d80-4121-9f15-eaa0ae16e6c4.webp",
                 Type = new ProductTypePersistence
                 {
                     Name = "Вітаміни і мінерали",
@@ -106,7 +106,7 @@ internal static class PharmaFlowDataSeeding
                 Description = "Дорослим і дітям з 12 років по 1 капсулі на добу під час прийому їжі.",
                 Price = 55,
                 Count = 990,
-                PathToFile = null,
+                PathToFile = "\\images\\7d712494-9cc2-48d7-abc1-e97f42e97f54.webp",
                 Type = new ProductTypePersistence
                 {
                     Name = "Добавки",

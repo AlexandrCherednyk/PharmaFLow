@@ -37,11 +37,22 @@
                 </div>
             </div>
 
-            <div class="col-md-1">
-                <span>Роль: @item.Role </span>
+            <div class="col-md-2">
+                @if (@item.Role == UserRoleViewModel.Admin)
+                {
+                    <span>Роль: Адмін </span>
+                }
+                else if (@item.Role == UserRoleViewModel.Manager)
+                {
+                    <span>Роль: Менеджер </span>
+                }
+                else if (@item.Role == UserRoleViewModel.Pharmacist)
+                {
+                    <span>Роль: Фарм-представник </span>
+                }
             </div>
 
-            <div class="col-md-3 row align-self-center text-center">
+            <div class="col-md-2 row align-self-center text-center">
                 <div>
                     <a class="btn btn-primary my-md-2" asp-area="Admin" asp-controller="User" asp-action="GetDetailedUser" asp-route-email="@item.Email">
                         <i class='bx bx-edit icon'></i>

@@ -2,12 +2,12 @@
 
 public enum UserRoleViewModel
 {
-    [Display(Name = "Admin")]
+    [Display(Name = "Адмін")]
     Admin = 1,
 
-    [Display(Name = "Manager")]
+    [Display(Name = "Менеджер")]
     Manager = 2,
 
-    [Display(Name = "Pharmacist")]
+    [Display(Name = "Фарм-представник")]
     Pharmacist = 3,
 }
