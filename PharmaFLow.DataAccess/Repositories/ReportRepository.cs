@@ -1,189 +1,238 @@
-﻿namespace ComputerShop.DataAccess.Repositories;
+﻿using PharmaFLow.DataAccess.Extensions;
+
+namespace ComputerShop.DataAccess.Repositories;
 
 public class ReportRepository : IReportRepository
 {
-    //public async Task AddPurchasesAsync(int productID, int count)
-    //{
-    //    string procedure = StoredProcedures.ADD_INPUT;
+    private readonly PharmaFlowDbContext _db;
 
-    //    using (MySqlConnection connection = new(DbContext.CONNECTION))
-    //    {
-    //        await connection.OpenAsync();
-
-    //        MySqlCommand command = new(procedure, connection);
-
-    //        command.CommandType = CommandType.StoredProcedure;
-
-    //        MySqlParameter ProductIDParam = new()
-    //        {
-    //            ParameterName = "productID",
-    //            Value = productID
-    //        };
-
-    //        MySqlParameter CountParam = new()
-    //        {
-    //            ParameterName = "count",
-    //            Value = count
-    //        };
-
-    //        command.Parameters.Add(ProductIDParam);
-    //        command.Parameters.Add(CountParam);
-
-    //        await command.ExecuteScalarAsync();
-    //    }
-    //}
-
-    //public async Task AddSalesAsync(int productID, int count, decimal? totalPrice, int userID)
-    //{
-    //    string procedure = StoredProcedures.ADD_OUTPUT;
-
-    //    using (MySqlConnection connection = new(DbContext.CONNECTION))
-    //    {
-    //        await connection.OpenAsync();
-
-    //        MySqlCommand command = new(procedure, connection);
-
-    //        command.CommandType = CommandType.StoredProcedure;
-
-    //        MySqlParameter ProductIDParam = new()
-    //        {
-    //            ParameterName = "productID",
-    //            Value = productID
-    //        };
-
-    //        MySqlParameter CountParam = new()
-    //        {
-    //            ParameterName = "count",
-    //            Value = count
-    //        };
-
-    //        MySqlParameter TotalPriceParam = new()
-    //        {
-    //            ParameterName = "totalPrice",
-    //            Value = totalPrice
-    //        };
-
-    //        MySqlParameter UserIDParam = new()
-    //        {
-    //            ParameterName = "userID",
-    //            Value = userID
-    //        };
-
-    //        command.Parameters.Add(ProductIDParam);
-    //        command.Parameters.Add(CountParam);
-    //        command.Parameters.Add(TotalPriceParam);
-    //        command.Parameters.Add(UserIDParam);
-
-    //        await command.ExecuteScalarAsync();
-    //    }
-    //}
-
-    //public async Task<List<InputReportPersistence>> GetPurchasesAsync()
-    //{
-    //    List<InputReportPersistence> inputs = new();
-
-    //    string procedure = StoredProcedures.GET_INPUT;
-
-    //    using (MySqlConnection connection = new(DbContext.CONNECTION))
-    //    {
-    //        await connection.OpenAsync();
-
-    //        MySqlCommand command = new(procedure, connection);
-
-    //        command.CommandType = CommandType.StoredProcedure;
-
-    //        MySqlDataReader reader = command.ExecuteReader();
-
-    //        if (reader.HasRows)
-    //        {
-    //            while (reader.Read())
-    //            {
-    //                int ID = (int)reader.GetValue(0);
-    //                int? productID = reader.GetValue(1) == DBNull.Value ? null : (int)reader.GetValue(1);
-    //                int count = (int)reader.GetValue(2);
-    //                DateTime time = (DateTime)reader.GetValue(3);
-
-    //                InputReportPersistence input = new()
-    //                {
-    //                    ID = ID,
-    //                    ProductID = productID,
-    //                    Count = count,
-    //                    Time = time,
-    //                };
-
-    //                inputs.Add(input);
-    //            }
-    //        }
-
-    //        reader.Close();
-    //    }
-
-    //    return inputs;
-    //}
-
-    //public async Task<List<OutputReportPersistence>> GetSalesAsync()
-    //{
-    //    List<OutputReportPersistence> outputs = new();
-
-    //    string procedure = StoredProcedures.GET_OUTPUT;
-
-    //    using (MySqlConnection connection = new(DbContext.CONNECTION))
-    //    {
-    //        await connection.OpenAsync();
-
-    //        MySqlCommand command = new(procedure, connection);
-
-    //        command.CommandType = CommandType.StoredProcedure;
-
-    //        MySqlDataReader reader = command.ExecuteReader();
-
-    //        if (reader.HasRows)
-    //        {
-    //            while (reader.Read())
-    //            {
-    //                int ID = (int)reader.GetValue(0);
-    //                int? productID = reader.GetValue(1) == DBNull.Value ? null : (int)reader.GetValue(1);
-    //                int count = (int)reader.GetValue(2);
-    //                decimal? totalPrice = reader.GetValue(3) == DBNull.Value ? null : decimal.Parse(reader.GetValue(3).ToString());
-    //                DateTime time = (DateTime)reader.GetValue(4);
-    //                int? userID = reader.GetValue(5) == DBNull.Value ? null : (int)reader.GetValue(5);
-
-    //                OutputReportPersistence output = new()
-    //                {
-    //                    ID = ID,
-    //                    ProductID = productID,
-    //                    Count = count,
-    //                    TotalPrice = totalPrice,
-    //                    Time = time,
-    //                    UserID = userID,
-    //                };
-
-    //                outputs.Add(output);
-    //            }
-    //        }
-
-    //        reader.Close();
-    //    }
-
-    //    return outputs;
-    //}
-    public Task AddPurchasesAsync(int productID, int count)
+    public ReportRepository(PharmaFlowDbContext db)
     {
-        throw new NotImplementedException();
+        _db = db;
     }
 
-    public Task AddSalesAsync(int productID, int count, decimal? totalPrice, int userID)
+    public async Task CreateInputReportAsync(Guid productID, string userEmail, int count)
     {
-        throw new NotImplementedException();
+        try
+        {
+            ProductPersistence product = await _db.Products.FirstAsync(p =>
+                p.ID == productID
+                && p.State == ProductStatePersistence.Active);
+
+            UserPersistence user = await _db.Users.FirstAsync(u =>
+                u.Email == userEmail
+                && u.State == UserStatePersistence.Active);
+
+            product.Count += count;
+
+            InputReportPersistence inputReport = new()
+            {
+                ProductID = product.ID,
+                UserID = user.ID,
+                Count = count,
+                CreatedOn = DateTime.Now,
+                TotalPrice = product.Price * count,
+            };
+
+            _db.InputReports.Add(inputReport);
+
+            await _db.SaveChangesAsync();
+        }
+        catch (InvalidOperationException)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
-    public Task<List<InputReportPersistence>> GetPurchasesAsync()
+    public async Task CreateOutputReportAsync(Guid productID, Guid staffID, string userEmail, int count, OutputReportStateDto state)
     {
-        throw new NotImplementedException();
+        try
+        {
+            ProductPersistence product = await _db.Products.FirstAsync(p =>
+                p.ID == productID
+                && p.State == ProductStatePersistence.Active);
+
+            UserPersistence user = await _db.Users.FirstAsync(u =>
+                u.Email == userEmail
+                && u.State == UserStatePersistence.Active);
+
+            MedicalFacilityContactPersistence staff = await _db.MedicalFacilityContacts.FirstAsync(s =>
+                s.ID == staffID
+                && s.State == MedicalFacilityContactStatePersistence.Active);
+
+            OutputReportPersistence outputReport = new()
+            {
+                ProductID = product.ID,
+                UserCreatorID = user.ID,
+                StaffTargetID = staff.ID,
+                Count = count,
+                CreatedOn = DateTime.Now,
+                TotalPrice = product.Price * count,
+                State = state.ToOutputReportStatePersistence(),
+            };
+
+            if (outputReport.State == OutputReportStatePersistence.Confirmed)
+            {
+                if ((product.Count - count) < 0)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+
+                product.Count -= count;
+
+                outputReport.UserConfirmatorID = user.ID;
+                outputReport.ConfirmedOn = DateTime.Now;
+            }
+
+            _db.OutputReports.Add(outputReport);
+
+            await _db.SaveChangesAsync();
+        }
+        catch (InvalidOperationException)
+        {
+            throw;
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
-    public Task<List<OutputReportPersistence>> GetSalesAsync()
+    public async Task<List<InputReportDto>> GetInputReportListAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            List<InputReportPersistence> inputReports = await _db.InputReports
+                .Include(ir => ir.Product)
+                    .ThenInclude(p => p!.Type)
+                .Include(ir => ir.Product)
+                    .ThenInclude(p => p.Manufacturer)
+                .Include(ir => ir.User)
+                .ToListAsync();
+
+            return inputReports.ToInputReportDtoList();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task<List<OutputReportDto>> GetOutputReportRequestListAsync()
+    {
+        try
+        {
+            List<OutputReportPersistence> outputReports = await _db.OutputReports
+                .Include(or => or.Product)
+                    .ThenInclude(or => or!.Type)
+                .Include(or => or.Product)
+                    .ThenInclude(p => p!.Manufacturer)
+                .Include(or => or.StaffTarget)
+                .Include(or => or.UserCreator)
+                .Where(or => or.State == OutputReportStatePersistence.Requested)
+                .ToListAsync();
+
+            return outputReports.ToOutputReportDtoList();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task ConfirmOutputReportAsync(Guid reportID, string userEmail)
+    {
+        try
+        {
+            UserPersistence user = await _db.Users.FirstAsync(u =>
+                u.Email == userEmail
+                && u.State == UserStatePersistence.Active);
+
+            OutputReportPersistence outputReport = await _db.OutputReports.FirstAsync(or =>
+                or.ID == reportID
+                && or.State == OutputReportStatePersistence.Requested);
+
+            ProductPersistence product = await _db.Products.FirstAsync(p =>
+                p.ID == outputReport.ProductID
+                && p.State == ProductStatePersistence.Active);
+
+            if ((product.Count - outputReport.Count) < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            product.Count -= outputReport.Count;
+            outputReport.ConfirmedOn = DateTime.Now;
+            outputReport.UserConfirmatorID = user.ID;
+            outputReport.State = OutputReportStatePersistence.Confirmed;
+
+            await _db.SaveChangesAsync();
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            throw;
+        }
+        catch (InvalidOperationException)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task RemoveOutputReportAsync(Guid reportID)
+    {
+        try
+        {
+            OutputReportPersistence outputReport = await _db.OutputReports.FirstAsync(or =>
+                or.ID == reportID
+                && or.State == OutputReportStatePersistence.Requested);
+
+            outputReport.State = OutputReportStatePersistence.Removed;
+
+            await _db.SaveChangesAsync();
+        }
+        catch (InvalidOperationException)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task<List<OutputReportDto>> GetOutputReportListAsync(string? userEmail)
+    {
+        try
+        {
+            List<OutputReportPersistence> outputReports = await _db.OutputReports
+                .Include(or => or.Product)
+                    .ThenInclude(or => or!.Type)
+                .Include(or => or.Product)
+                    .ThenInclude(p => p!.Manufacturer)
+                .Include(or => or.StaffTarget)
+                .Include(or => or.UserCreator)
+                .Where(or =>
+                    (userEmail == null || or.UserCreator!.Email == userEmail)
+                    && or.State == OutputReportStatePersistence.Confirmed)
+                .ToListAsync();
+
+            return outputReports.ToOutputReportDtoList();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }

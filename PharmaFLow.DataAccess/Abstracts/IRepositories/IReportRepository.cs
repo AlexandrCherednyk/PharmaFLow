@@ -1,13 +1,19 @@
-﻿using PharmaFLow.DataAccess.Persistences.Reports;
-
-namespace PharmaFLow.DataAccess.Abstracts.IRepositories;
+﻿namespace PharmaFLow.DataAccess.Abstracts.IRepositories;
 
 public interface IReportRepository
 {
-    Task AddSalesAsync(int productID, int count, decimal? totalPrice, int userID);
-    Task AddPurchasesAsync(int productID, int count);
+    Task CreateInputReportAsync(Guid productID, string userEmail, int count);
 
-    Task<List<OutputReportPersistence>> GetSalesAsync();
-    Task<List<InputReportPersistence>> GetPurchasesAsync();
+    Task CreateOutputReportAsync(Guid productID, Guid staffID, string userEmail, int count, OutputReportStateDto state);
+
+    Task<List<InputReportDto>> GetInputReportListAsync();
+
+    Task<List<OutputReportDto>> GetOutputReportRequestListAsync();
+
+    Task ConfirmOutputReportAsync(Guid reportID, string userEmail);
+
+    Task RemoveOutputReportAsync(Guid reportID);
+
+    Task<List<OutputReportDto>> GetOutputReportListAsync(string? userEmail);
 }
 

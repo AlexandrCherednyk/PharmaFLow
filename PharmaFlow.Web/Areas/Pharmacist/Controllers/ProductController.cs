@@ -1,4 +1,7 @@
-﻿using PharmaFlow.Web.Areas.Pharmacist.ViewModels.Product;
+﻿using PharmaFlow.Infrastructure.Dtos;
+using PharmaFlow.Web.Areas.Pharmacist.ViewModels.MedicalFacilities;
+using PharmaFlow.Web.Areas.Pharmacist.ViewModels.Product;
+using PharmaFlow.Web.Extensions;
 
 namespace PharmaFlow.Web.Areas.Pharmacist.Controllers;
 
@@ -6,13 +9,16 @@ namespace PharmaFlow.Web.Areas.Pharmacist.Controllers;
 public class ProductController : Controller
 {
     private readonly IProductRepository _productRepository;
+    private readonly IMedicalFacilityRepository _medicalFacilityRepository;
     private readonly IWebHostEnvironment _webHostEnvironment;
 
     public ProductController(
         IProductRepository productRepository,
+        IMedicalFacilityRepository medicalFacilityRepository,
         IWebHostEnvironment webHostEnvironment)
     {
         _productRepository = productRepository;
+        _medicalFacilityRepository = medicalFacilityRepository;
         _webHostEnvironment = webHostEnvironment;
     }
 
@@ -111,9 +117,11 @@ public class ProductController : Controller
 
             List<ProductTypeViewModel> types = (await _productRepository.GetProductTypeListAsync()).ToProductrTypeViewModelList();
             List<ProductManufacturerViewModel> manufacturers = (await _productRepository.GetProductManufacturerListAsync()).ToProductManufacturerViewModelList();
+            List<MedicalFacilityContactViewModel> staff = (await _medicalFacilityRepository.GetMedicalFacilityContactListAsync()).ToMedicalFacilityContactViewModelList();
 
             ViewBag.Types = types;
             ViewBag.Manufacturers = manufacturers;
+            ViewBag.Staff = staff;
 
             return View("UpdateProductPanel", product);
         }

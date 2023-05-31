@@ -42,9 +42,9 @@
                         </li>
 
                         <li>
-                            <a href="#">
+                            <a asp-area="Pharmacist" asp-controller="Chart" asp-action="GetOutputReportChart">
                                 <i class='bx bx-bar-chart-alt-2 icon'></i>
-                                <span class="text nav-text">Analytics</span>
+                                <span class="text nav-text">Аналітика</span>
                             </a>
                         </li>
 
@@ -55,12 +55,23 @@
                             </a>
                         </li>
 
-                        <li>
-                            <a href="#">
-                                <i class='bx bx-pie-chart-alt icon'></i>
-                                <span class="text nav-text">Stats</span>
-                            </a>
-                        </li>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+                            <li>
+                                <a asp-area="Manager" asp-controller="Report" asp-action="GetOutputReportRequestList">
+                                    <i class='bx bx-file icon'></i>
+                                    <span class="text nav-text">Запити звітів</span>
+                                </a>
+                            </li>
+
+
+                            <li>
+                                <a asp-area="Manager" asp-controller="Report" asp-action="GetInputReportList">
+                                    <i class='bx bx-cart-download icon'></i>
+                                    <span class="text nav-text">Закупівлі</span>
+                                </a>
+                            </li>
+                        }
 
                         <li>
                             <a asp-area="Pharmacist" asp-controller="MedicalFacility" asp-action="GetMedicalFacilityList">

@@ -140,4 +140,22 @@ public class MedicalFacilityRepository : IMedicalFacilityRepository
             throw;
         }
     }
+
+    public async Task<List<MedicalFacilityContactDto>> GetMedicalFacilityContactListAsync()
+    {
+        try
+        {
+            List<MedicalFacilityContactPersistence> medicalFacilityContacts = await _db.MedicalFacilityContacts
+                .Include(mc => mc.Contact)
+                .Include(mc => mc.Position)
+                .Where(m => m.State == MedicalFacilityContactStatePersistence.Active)
+                .ToListAsync();
+
+            return medicalFacilityContacts.ToMedicalFacilityContactDtoList();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
 }

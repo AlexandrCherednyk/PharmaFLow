@@ -1,0 +1,83 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<script>
+		window.onload = function () {
+
+			var chart = new CanvasJS.Chart("chartContainer", {
+				animationEnabled: true,
+				title: {
+					text: "Звітність продаж за місяць"
+				},
+				axisX: {
+					valueFormatString: "DD MMM"
+				},
+				axisY: {
+					title: "грн",
+					prefix: "₴"
+				},
+				data: [{
+					type: "spline",
+					xValueType: "dateTime",
+					xValueFormatString: "DD MMM",
+					yValueFormatString: "₴#,###",
+					dataPoints: @Html.Raw(ViewBag.DataPoints)
+			}]
+			});
+			chart.render();
+
+		}
+	</script>
+</head>
+<body>
+	<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+	<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+</body>
+</html>
+
+@using Microsoft.AspNetCore.Identity;
+@using PharmaFlow.Web.Areas.Pharmacist.ViewModels.Report;
+@model List<OutputReportViewModel>
+
+<div class="card mt-5">
+    <div>
+        <table class="table table-hover table-light">
+
+            <thead>
+
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Назва продукту</th>
+                    <th scope="col">Кількість</th>
+                    <th scope="col">Загальна сума</th>
+                    <th scope="col">Час створення</th>
+                    <th scope="col">Створив</th>
+                    <th scope="col">ID працівника</th>
+                    <th scope="col">Час підтвердження</th>
+                    <th scope="col">Підтвердив</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var report in Model)
+                {
+                    <tr class="table-light">
+                        <th scope="row">@report.ID</th>
+                        <td>@report.ProductName</td>
+                        <td>@report.Count</td>
+                        <td>@report.TotalPrice ₴</td>
+                        <td>@report.CreatedOn</td>
+                        <td>@report.UserCreatorEmail</td>
+                        <td>@report.StaffTargetID</td>
+                        <td>@report.ConfirmedOn</td>
+                        <td>@report.UserConfirmatorEmail</td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+</div>

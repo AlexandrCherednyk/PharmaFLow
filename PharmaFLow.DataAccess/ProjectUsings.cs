@@ -23,3 +23,4 @@ global using PharmaFLow.DataAccess.Persistences.Enumerations.Reports;
 global using PharmaFlow.Infrastructure.Dtos;
 global using PharmaFlow.Infrastructure.Dtos.Enumerations.Users;
 global using PharmaFlow.Infrastructure.Dtos.Requests;
+global using PharmaFlow.Infrastructure.Dtos.Enumerations.Reports;

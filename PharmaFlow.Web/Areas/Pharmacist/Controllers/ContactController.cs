@@ -47,12 +47,14 @@ public class ContactController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin, Manager")]
     public IActionResult CreateContact()
     {
         return View("CreateContactPanel");
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin, Manager")]
     public async Task<IActionResult> CreateContact(
         [Required]
         ContactViewModel contact)

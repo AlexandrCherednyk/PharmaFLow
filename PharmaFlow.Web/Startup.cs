@@ -34,6 +34,7 @@ public class Startup
         services.AddScoped<IReportRepository, ReportRepository>();
         services.AddScoped<IMedicalFacilityRepository, MedicalFacilityRepository>();
         services.AddScoped<IContactRepository, ContactRepository>();
+        services.AddScoped<IReportRepository, ReportRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

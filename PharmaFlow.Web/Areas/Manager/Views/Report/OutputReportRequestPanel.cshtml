@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using PharmaFlow.Web.Areas.Manager.ViewModels.Report;
+@model List<OutputReportRequestViewModel>
+
+<table class="table table-hover table-light">
+
+    <thead>
+
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Назва продукту</th>
+            <th scope="col">Кількість</th>
+            <th scope="col">Загальна сума</th>
+            <th scope="col">Час створення</th>
+            <th scope="col">Створив</th>
+            <th scope="col">ID працівника</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var report in Model)
+        {
+            <tr class="table-light">
+                <th scope="row">@report.ID</th>
+                <td>@report.ProductName</td>
+                <td>@report.Count</td>
+                <td>@report.TotalPrice ₴</td>
+                <td>@report.CreatedOn</td>
+                <td>@report.UserCreatorEmail</td>
+                <td>@report.StaffTargetID</td>
+                <td>
+                    <div>
+                        <a class="text-danger text-decoration-none mx-3" asp-area="Manager" asp-controller="Report" asp-action="ConfirmOutputReport" asp-route-id="@report.ID">Підтвердити</a>
+                    </div>
+
+                    <div>
+                        <a class="text-danger text-decoration-none mx-3" asp-area="Manager" asp-controller="Report" asp-action="RemoveOutputReportRequest" asp-route-id="@report.ID">Видалити</a>
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

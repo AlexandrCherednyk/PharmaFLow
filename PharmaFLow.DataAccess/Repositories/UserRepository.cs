@@ -1,7 +1,4 @@
-﻿using Azure.Core;
-using Microsoft.Data.SqlClient;
-using PharmaFlow.Infrastructure.Dtos.Requests;
-using PharmaFLow.DataAccess.Extensions;
+﻿using PharmaFLow.DataAccess.Extensions;
 
 namespace ComputerShop.DataAccess.Repositories;
 

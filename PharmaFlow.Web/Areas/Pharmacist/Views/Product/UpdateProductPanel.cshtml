@@ -69,7 +69,7 @@
                             <label class="col-md-4 col-form-label" for="Name">Ціна:</label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <span class="input-group-text">$</span>
+                                    <span class="input-group-text">₴</span>
                                     <input type="text" asp-for="Price" id="product-name" class="form-control" placeholder="0" />
                                 </div>
                             </div>
@@ -79,8 +79,8 @@
                             <label class="col-md-4 col-form-label" for="Count">Кількість:</label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <span class="input-group-text">$</span>
                                     <input type="text" asp-for="Count" id="product-name" class="form-control"/>
+                                    <span asp-validation-for="Count" class="field-validation-error text-danger" />
                                 </div>
                             </div>
                         </div>
@@ -133,7 +133,7 @@
                             <label class="col-md-4 col-form-label" for="Name">Ціна:</label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <span class="input-group-text">$</span>
+                                    <span class="input-group-text">₴</span>
                                     <input type="text" asp-for="Price" id="product-name" class="form-control" placeholder="0" disabled="" />
                                 </div>
                             </div>
@@ -143,8 +143,8 @@
                             <label class="col-md-4 col-form-label" for="Count">Кількість:</label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <span class="input-group-text">$</span>
                                     <input type="text" asp-for="Count" id="product-name" class="form-control" disabled="" />
+                                    <span asp-validation-for="Count" class="field-validation-error text-danger" />
                                 </div>
                             </div>
                         </div>
@@ -176,6 +176,102 @@
         </div>
     </form>
 </div>
+
+@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+{
+    <div class="card p-4 mb-4">
+        <form method="post" asp-action="CreateOutputReportConfirmed" asp-controller="Report" asp-area="Pharmacist" asp-anti-forgery="true">
+            <h2 class="text-center mb-4">Створити звіт про покупку</h2>
+
+            <div class="validation text-danger mx-2">
+                <p>@ViewBag.CreateOutputReportRequestErrorMessage</p>
+            </div>
+
+            <input class="form-control" name="productID" type="text" value="@Model.ID" hidden="">
+
+            <div class="col-6 mx-2">
+                <div class="mb-3 form-group row">
+                    <label class="col-md-4 col-form-label" for="staffID">Працівник:</label>
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.StaffID, new SelectList(ViewBag.Staff, "ID", "DropDownText"), "Оберіть працівника:", new { @class = "form-select"})
+                        <span asp-validation-for="StaffID" class="field-validation-error text-danger" />
+                    </div>
+                </div>
+
+                <div class="mb-3 form-group row">
+                    <label class="col-md-4 col-form-label" for="count">Кількість:</label>
+                    <div class="col-md-8">
+                        <input type="text" for="count" id="count" name="count" class="form-control" />
+                        <span for="count" class="field-validation-error text-danger" />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mb-4">Додати</button>
+            </div>
+        </form>
+    </div>
+}
+else
+{
+    <div class="card p-4 mb-4">
+        <form method="post" asp-action="CreateOutputReportRequest" asp-controller="Report" asp-area="Pharmacist" asp-anti-forgery="true">
+            <h2 class="text-center mb-4">Створити запит для звіту про покупку</h2>
+
+            <div class="validation text-danger mx-2">
+                <p>@ViewBag.CreateOutputReportRequestErrorMessage</p>
+            </div>
+
+            <input class="form-control" name="productID" type="text" value="@Model.ID" hidden="">
+
+            <div class="col-6 mx-2">
+                <div class="mb-3 form-group row">
+                    <label class="col-md-4 col-form-label" for="staffID">Працівник:</label>
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.StaffID, new SelectList(ViewBag.Staff, "ID", "DropDownText"), "Оберіть працівника:", new { @class = "form-select"})
+                        <span asp-validation-for="StaffID" class="field-validation-error text-danger" />
+                    </div>
+                </div>
+
+                <div class="mb-3 form-group row">
+                    <label class="col-md-4 col-form-label" for="count">Кількість:</label>
+                    <div class="col-md-8">
+                        <input type="text" for="count" id="count" name="count" class="form-control" />
+                        <span for="count" class="field-validation-error text-danger" />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mb-4">Додати</button>
+            </div>
+        </form>
+    </div>
+}
+
+@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+{
+    <div class="card p-4 mb-4">
+        <form method="post" asp-action="CreateInputReport" asp-controller="Report" asp-area="Pharmacist" asp-anti-forgery="true">
+            <h2 class="text-center mb-4">Додати продукт на склад</h2>
+
+            <div class="validation text-danger mx-2">
+                <p>@ViewBag.CreateInputReportErrorMessage</p>
+            </div>
+
+            <input class="form-control" name="productID" type="text" value="@Model.ID" hidden="">
+
+            <div class="col-4 mx-2">
+                <div class="mb-3 form-group row">
+                    <label class="col-md-4 col-form-label" for="count">Кількість:</label>
+                    <div class="col-md-8">
+                        <input type="text" for="count" id="count" name="count" class="form-control" />
+                        <span for="count" class="field-validation-error text-danger" />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mb-4">Додати</button>
+            </div>
+        </form>
+    </div>
+}
 
 @section  Scripts{
     @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")

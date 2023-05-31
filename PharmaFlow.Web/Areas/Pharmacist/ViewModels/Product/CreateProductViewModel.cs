@@ -28,4 +28,6 @@ public record CreateProductViewModel
     public IFormFile Image { get; set; } = null!;
 
     public List<ProductCharacteristicViewModel> Characteristics { get; init; } = new();
+
+    public Guid? StaffID { get; set; }
 }

@@ -26,7 +26,7 @@
                 <img src="@item.PathToFile" alt="Product img." />
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class ="row text-center align-self-center">
                     <div>
                         <span>Назва: @item.Name</span>
@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="row text-center align-self-center">
                     <div>
                         <span>Ціна: @item.Price₴</span>
@@ -50,13 +50,8 @@
                 </div>
             </div>
 
-            <div class="col-md-5 row align-self-center text-center">
+            <div class="col-md-3 row align-self-center text-center">
                 <div>
-                    <a class="btn btn-success my-md-2" asp-area="Pharmacist" asp-controller="Product" asp-action="BuyProduct" asp-route-id="@item.ID">
-                        <i class='bx bx-basket icon'></i>
-                        <span>Створити звіт</span>
-                    </a>
-
                     <a class="btn btn-primary my-md-2" asp-area="Pharmacist" asp-controller="Product" asp-action="UpdateProductPanel" asp-route-id="@item.ID">
                         <i class='bx bx-edit icon'></i>
                         <span>Деталі</span>
@@ -73,4 +68,8 @@
             </div>
         </div>
     </div>
+}
+
+@section  Scripts{
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
 }

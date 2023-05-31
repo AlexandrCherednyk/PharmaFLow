@@ -17,4 +17,6 @@ public class MedicalFacilityContactViewModel
     public Guid PositionID { get; set; }
 
     public string PositionName { get; set; } = null!;
+
+    public string DropDownText => $"{FirstName} {LastName} - {PositionName} - ID:{ID}";
 }

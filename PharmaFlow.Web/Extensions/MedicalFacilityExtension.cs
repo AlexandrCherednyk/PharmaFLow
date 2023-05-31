@@ -18,16 +18,16 @@ public static class MedicalFacilityExtension
             Address = medicalFacility.Address,
             TypeID = medicalFacility.Type!.ID,
             TypeName = medicalFacility.Type!.Name,
-            Staff = medicalFacility.Staff!.ToMedicalFacilityContactDtoList(),
+            Staff = medicalFacility.Staff!.ToMedicalFacilityContactViewModelList(),
         };
     }
 
-    public static List<MedicalFacilityContactViewModel> ToMedicalFacilityContactDtoList(this List<MedicalFacilityContactDto> medicalFacilityContactList)
+    public static List<MedicalFacilityContactViewModel> ToMedicalFacilityContactViewModelList(this List<MedicalFacilityContactDto> medicalFacilityContactList)
     {
-        return medicalFacilityContactList.ConvertAll(mc => mc.ToMedicalFacilityContactDto());
+        return medicalFacilityContactList.ConvertAll(mc => mc.ToMedicalFacilityContactViewModel());
     }
 
-    public static MedicalFacilityContactViewModel ToMedicalFacilityContactDto(this MedicalFacilityContactDto medicalFacilityContact)
+    public static MedicalFacilityContactViewModel ToMedicalFacilityContactViewModel(this MedicalFacilityContactDto medicalFacilityContact)
     {
         return new()
         {

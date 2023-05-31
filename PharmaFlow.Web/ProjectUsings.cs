@@ -18,5 +18,6 @@ global using PharmaFlow.Web.ViewModels;
 global using PharmaFlow.Infrastructure.Dtos;
 global using PharmaFlow.Web.Extensions;
 global using PharmaFlow.Infrastructure.Dtos.Requests;
+global using PharmaFlow.Infrastructure.Dtos.Enumerations.Reports;
 
 global using PharmaFlow.Utils;

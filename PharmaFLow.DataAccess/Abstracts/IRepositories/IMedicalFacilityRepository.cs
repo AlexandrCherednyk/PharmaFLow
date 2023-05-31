@@ -13,4 +13,6 @@ public interface IMedicalFacilityRepository
     Task CreateMedicalFacilityTypeAsync(string name);
 
     Task CreateMedicalFacilityContactPositionAsync(string name);
+
+    Task<List<MedicalFacilityContactDto>> GetMedicalFacilityContactListAsync();
 }
